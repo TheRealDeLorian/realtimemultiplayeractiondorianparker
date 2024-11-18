@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { VehicleComponent } from "./Components/VehicleComponent";
-import { PlayerVehicle } from "./Data/Vehicle";
+import { PlayerVehicle } from "./Data/PlayerVehicle";
 
 function App() {
   const vehicle: PlayerVehicle = {

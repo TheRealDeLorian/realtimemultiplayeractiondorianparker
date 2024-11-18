@@ -1,4 +1,4 @@
-import { PlayerVehicle } from "../Data/Vehicle";
+import { PlayerVehicle } from "../Data/PlayerVehicle";
 
 export const VehicleComponent = ({ vehicle }: { vehicle: PlayerVehicle }) => {
   return (
