@@ -1,6 +1,9 @@
 import { PlayerVehicle } from "../Data/PlayerVehicle";
+import { GameServerContextProvider } from "../services/GameServerContextProvider";
 
-export const VehicleComponent = ({ vehicle }: { vehicle: PlayerVehicle }) => {
+export const VehicleComponent = () => {
+  vehicle = GameServerContextProvider //dix this l8r
+  
   return (
     <div
       style={{
