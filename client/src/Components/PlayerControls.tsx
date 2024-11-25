@@ -1,64 +1,66 @@
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useGameServerContext } from "../context/useGameServerContext";
 
-export const PlayerControls = () => {
-  //update vehicle with
-  const { updateVehicle, vehicle } = useGameServerContext();
+interface props {
+  id: number;
+}
+
+export const PlayerControls: FC<props> = ({ id }) => {
+  const { updateVehicle, vehicleList } = useGameServerContext();
 
   useEffect(() => {
-    //needs to clean up event listeners
     const moveForward = function (event: KeyboardEvent) {
       if (event.key == "w") {
-        updateVehicle(1, "moveForward");
+        updateVehicle(id, "moveForward");
       }
     };
     window.addEventListener("keydown", moveForward);
 
     const stopForwards = function (event: KeyboardEvent) {
       if (event.key == "w") {
-        updateVehicle(1, "stopForwards");
+        updateVehicle(id, "stopForwards");
       }
     };
     window.addEventListener("keyup", stopForwards);
 
     const moveBackwards = function (event: KeyboardEvent) {
       if (event.key == "s") {
-        updateVehicle(1, "moveBackward");
+        updateVehicle(id, "moveBackward");
       }
     };
     window.addEventListener("keydown", moveBackwards);
 
     const stopBackwards = function (event: KeyboardEvent) {
       if (event.key == "s") {
-        updateVehicle(1, "stopBackwards");
+        updateVehicle(id, "stopBackwards");
       }
     };
     window.addEventListener("keyup", stopBackwards);
 
     const turnLeft = function (event: KeyboardEvent) {
       if (event.key == "a") {
-        updateVehicle(1, "turnLeft");
+        updateVehicle(id, "turnLeft");
       }
     };
     window.addEventListener("keydown", turnLeft);
 
     const stopLeft = function (event: KeyboardEvent) {
       if (event.key == "a") {
-        updateVehicle(1, "stopLeft");
+        updateVehicle(id, "stopLeft");
       }
     };
     window.addEventListener("keyup", stopLeft);
 
     const turnRight = function (event: KeyboardEvent) {
       if (event.key == "d") {
-        updateVehicle(1, "turnRight");
+        updateVehicle(id, "turnRight");
       }
     };
     window.addEventListener("keydown", turnRight);
 
     const stopRight = function (event: KeyboardEvent) {
       if (event.key == "d") {
-        updateVehicle(1, "stopRight");
+        updateVehicle(id, "stopRight");
       }
     };
     window.addEventListener("keyup", stopRight);
@@ -73,8 +75,7 @@ export const PlayerControls = () => {
       window.removeEventListener("keydown", turnRight);
       window.removeEventListener("keyup", stopRight);
     };
-  }, [vehicle]);
+  }, [vehicleList]);
 
   return <div></div>;
-  //context donw by monday and started infinite loop
 };

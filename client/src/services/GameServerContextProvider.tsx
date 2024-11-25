@@ -12,15 +12,21 @@ const tickInterval: number = 10;
 export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [vehicle, setVehicle] = useState<PlayerVehicle>({
-    id: 1,
-    xpos: 100,
-    ypos: 100,
-    angleindegs: 0,
-    isLeft: false,
-    isRight: false,
-    acceleration: "none",
-  });
+  const [vehicleList, setVehicleList] = useState<PlayerVehicle[]>([
+    {
+      id: 1,
+      xpos: 100,
+      ypos: 100,
+      angleindegs: 0,
+      isLeft: false,
+      isRight: false,
+      acceleration: "none",
+    },
+  ]);
+
+  const registerVehicle = (vehicle: PlayerVehicle) => {
+    setVehicleList([...vehicleList, vehicle]);
+  };
 
   const updateVehicle = (
     id: number,
@@ -34,46 +40,52 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
       | "stopLeft" // when user lets go of 'a' key
       | "stopRight" // when user lets go of 'd' key
   ) => {
-    //call setstate
-    setVehicle((oldVehicle) => {
-      const newVehicle = { ...oldVehicle };
-      console.log("vehicleAction: ", vehicleAction);
-      switch (vehicleAction) {
-        case "moveForward":
-          newVehicle.acceleration = "forwards";
-          break; // 'w' pressed
-        case "moveBackward":
-          newVehicle.acceleration = "backwards";
-          break; // 's' pressed
-        case "turnLeft":
-          newVehicle.isRight = false;
-          newVehicle.isLeft = true;
-          break; // 'a' pressed
-        case "turnRight":
-          newVehicle.isLeft = false;
-          newVehicle.isRight = true;
-          break; // 'd' pressed
-        case "stopForwards":
-          newVehicle.acceleration = "none";
-          break; // when user lets go of 'w' key
-        case "stopBackwards":
-          newVehicle.acceleration = "none";
-          break; // when user lets go of 's' key
-        case "stopLeft":
-          newVehicle.isLeft = false;
-          break; // when user lets go of 'a' key
-        case "stopRight":
-          newVehicle.isRight = false;
-          break; // when user lets go of 'd' key
-      }
-      console.log("newVehicle: ", newVehicle);
-      return newVehicle;
+    setVehicleList((oldVehicle) => {
+      const updatedVehicles = oldVehicle.map((v) => {
+        if (v.id === id) {
+          const updatedVehicle = { ...v };
+
+          switch (vehicleAction) {
+            case "moveForward":
+              updatedVehicle.acceleration = "forwards";
+              break;
+            case "moveBackward":
+              updatedVehicle.acceleration = "backwards";
+              break;
+            case "turnLeft":
+              updatedVehicle.isRight = false;
+              updatedVehicle.isLeft = true;
+              break;
+            case "turnRight":
+              updatedVehicle.isLeft = false;
+              updatedVehicle.isRight = true;
+              break;
+            case "stopForwards":
+            case "stopBackwards":
+              updatedVehicle.acceleration = "none";
+              break;
+            case "stopLeft":
+              updatedVehicle.isLeft = false;
+              break;
+            case "stopRight":
+              updatedVehicle.isRight = false;
+              break;
+            default:
+              console.warn("Unknown vehicleAction: ", vehicleAction);
+          }
+          console.log("Updated Vehicle: ", updatedVehicle);
+          return updatedVehicle;
+        }
+        return v;
+      });
+
+      return updatedVehicles; // Update the state with the new array
     });
   };
 
   const loop = () => {
     setTimeout(() => {
-      setVehicle((x) => moveVehicle(x));
+      setVehicleList((x) => x.map((y) => moveVehicle(y)));
       loop();
     }),
       tickInterval;
@@ -84,7 +96,9 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
   }, []);
 
   return (
-    <gameServerContext.Provider value={{ vehicle, updateVehicle }}>
+    <gameServerContext.Provider
+      value={{ vehicleList, updateVehicle, registerVehicle }}
+    >
       {children}
     </gameServerContext.Provider>
   );
