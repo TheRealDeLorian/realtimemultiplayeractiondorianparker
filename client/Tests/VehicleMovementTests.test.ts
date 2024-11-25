@@ -10,7 +10,7 @@ test("Creates a vehicle", () => {
     angleindegs: 0,
     isLeft: false,
     isRight: false,
-    isAccelerating: false,
+    acceleration: "none",
   };
 
   const expectedVehicle: PlayerVehicle = {
@@ -20,7 +20,7 @@ test("Creates a vehicle", () => {
     angleindegs: 0,
     isLeft: false,
     isRight: false,
-    isAccelerating: false,
+    acceleration: "none",
   };
 
   expect(moveVehicle(playerVehicle)).toEqual(expectedVehicle);
@@ -34,17 +34,17 @@ test("Turn left", () => {
     angleindegs: 0,
     isLeft: true,
     isRight: false,
-    isAccelerating: false,
+    acceleration: "none",
   };
 
   const expectedVehicle: PlayerVehicle = {
     id: 1,
     xpos: 100,
     ypos: 100,
-    angleindegs: -45,
+    angleindegs: -3,
     isLeft: true,
     isRight: false,
-    isAccelerating: false,
+    acceleration: "none",
   };
 
   expect(moveVehicle(playerVehicle)).toEqual(expectedVehicle);
@@ -58,17 +58,17 @@ test("Turn right", () => {
     angleindegs: 0,
     isLeft: false,
     isRight: true,
-    isAccelerating: false,
+    acceleration: "none",
   };
 
   const expectedVehicle: PlayerVehicle = {
     id: 1,
     xpos: 100,
     ypos: 100,
-    angleindegs: 45,
+    angleindegs: 3,
     isLeft: false,
     isRight: true,
-    isAccelerating: false,
+    acceleration: "none",
   };
 
   expect(moveVehicle(playerVehicle)).toEqual(expectedVehicle);
@@ -82,7 +82,7 @@ test("No turn", () => {
     angleindegs: 0,
     isLeft: false,
     isRight: false,
-    isAccelerating: false,
+    acceleration: "none",
   };
 
   const expectedVehicle: PlayerVehicle = {
@@ -92,7 +92,7 @@ test("No turn", () => {
     angleindegs: 0,
     isLeft: false,
     isRight: false,
-    isAccelerating: false,
+    acceleration: "none",
   };
 
   expect(moveVehicle(playerVehicle)).toEqual(expectedVehicle);
@@ -106,17 +106,17 @@ test("accelerate on x axis", () => {
     angleindegs: 0,
     isLeft: false,
     isRight: false,
-    isAccelerating: true,
+    acceleration: "forwards",
   };
 
   const expectedVehicle: PlayerVehicle = {
     id: 1,
-    xpos: 101,
+    xpos: 99,
     ypos: 100,
     angleindegs: 0,
     isLeft: false,
     isRight: false,
-    isAccelerating: true,
+    acceleration: "forwards",
   };
 
   expect(moveVehicle(playerVehicle)).toEqual(expectedVehicle);
@@ -130,17 +130,17 @@ test("accelerate on y axis", () => {
     angleindegs: 90,
     isLeft: false,
     isRight: false,
-    isAccelerating: true,
+    acceleration: "forwards",
   };
 
   const expectedVehicle: PlayerVehicle = {
     id: 1,
     xpos: 100,
-    ypos: 101,
+    ypos: 99,
     angleindegs: 90,
     isLeft: false,
     isRight: false,
-    isAccelerating: true,
+    acceleration: "forwards",
   };
 
   expect(moveVehicle(playerVehicle)).toEqual(expectedVehicle);
@@ -154,17 +154,17 @@ test("accelerate on 45 degree angle", () => {
     angleindegs: 45,
     isLeft: false,
     isRight: false,
-    isAccelerating: true,
+    acceleration: "forwards",
   };
 
   const expectedVehicle: PlayerVehicle = {
     id: 1,
-    xpos: 101,
-    ypos: 101,
+    xpos: 99,
+    ypos: 99,
     angleindegs: 45,
     isLeft: false,
     isRight: false,
-    isAccelerating: true,
+    acceleration: "forwards",
   };
 
   expect(moveVehicle(playerVehicle)).toEqual(expectedVehicle);
@@ -178,17 +178,17 @@ test("accelerate on 225 degree angle", () => {
     angleindegs: 225,
     isLeft: false,
     isRight: false,
-    isAccelerating: true,
+    acceleration: "forwards",
   };
 
   const expectedVehicle: PlayerVehicle = {
     id: 1,
-    xpos: 99,
-    ypos: 99,
+    xpos: 101,
+    ypos: 101,
     angleindegs: 225,
     isLeft: false,
     isRight: false,
-    isAccelerating: true,
+    acceleration: "forwards",
   };
 
   expect(moveVehicle(playerVehicle)).toEqual(expectedVehicle);
@@ -202,19 +202,18 @@ test("accelerate on -45 degree angle", () => {
     angleindegs: -45,
     isLeft: false,
     isRight: false,
-    isAccelerating: true,
+    acceleration: "forwards",
   };
 
   const expectedVehicle: PlayerVehicle = {
     id: 1,
-    xpos: 101,
-    ypos: 99,
+    xpos: 99,
+    ypos: 101,
     angleindegs: -45,
     isLeft: false,
     isRight: false,
-    isAccelerating: true,
+    acceleration: "forwards",
   };
 
   expect(moveVehicle(playerVehicle)).toEqual(expectedVehicle);
 });
-

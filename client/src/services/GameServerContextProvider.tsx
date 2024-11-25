@@ -1,8 +1,13 @@
 //expose the current vehicle and this function to update a vehicle.
 
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { PlayerVehicle } from "../Data/PlayerVehicle";
 import { gameServerContext } from "../context/useGameServerContext";
+import { moveVehicle } from "../logic/vehicleUtils";
+
+const accelerationSpeed: number = 5;
+const turningSpeed: number = 5;
+const tickInterval: number = 10;
 
 export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -14,7 +19,7 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
     angleindegs: 0,
     isLeft: false,
     isRight: false,
-    isAccelerating: false,
+    acceleration: "none",
   });
 
   const updateVehicle = (
@@ -35,10 +40,10 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
       console.log("vehicleAction: ", vehicleAction);
       switch (vehicleAction) {
         case "moveForward":
-          newVehicle.isAccelerating = true;
+          newVehicle.acceleration = "forwards";
           break; // 'w' pressed
         case "moveBackward":
-          newVehicle.isAccelerating = true;
+          newVehicle.acceleration = "backwards";
           break; // 's' pressed
         case "turnLeft":
           newVehicle.isRight = false;
@@ -49,10 +54,10 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
           newVehicle.isRight = true;
           break; // 'd' pressed
         case "stopForwards":
-          newVehicle.isAccelerating = false;
+          newVehicle.acceleration = "none";
           break; // when user lets go of 'w' key
         case "stopBackwards":
-          newVehicle.isAccelerating = false;
+          newVehicle.acceleration = "none";
           break; // when user lets go of 's' key
         case "stopLeft":
           newVehicle.isLeft = false;
@@ -65,6 +70,18 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
       return newVehicle;
     });
   };
+
+  const loop = () => {
+    setTimeout(() => {
+      setVehicle((x) => moveVehicle(x));
+      loop();
+    }),
+      tickInterval;
+  };
+
+  useEffect(() => {
+    loop();
+  }, []);
 
   return (
     <gameServerContext.Provider value={{ vehicle, updateVehicle }}>

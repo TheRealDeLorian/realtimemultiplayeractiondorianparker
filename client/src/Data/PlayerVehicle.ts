@@ -5,5 +5,5 @@ export interface PlayerVehicle {
   angleindegs: number;
   isLeft: boolean;
   isRight: boolean;
-  isAccelerating: boolean;
+  acceleration: "forwards" | "backwards" | "none";
 }
