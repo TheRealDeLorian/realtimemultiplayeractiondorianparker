@@ -7,11 +7,11 @@ interface props {
 }
 
 export const PlayerControls: FC<props> = ({ id }) => {
-  const { updateVehicle, vehicleList, registerVehicle } = useGameServerContext();
+  const { updateVehicle, vehicleList, registerVehicle } =
+    useGameServerContext();
   //if vehcile isnt in the list
   //register it
-  if (!vehicleList.find(x => x.id === id))
-  {
+  if (!vehicleList.find((x) => x.id === id)) {
     const newVehicle: PlayerVehicle = {
       acceleration: "none",
       angleindegs: 0,
@@ -19,8 +19,8 @@ export const PlayerControls: FC<props> = ({ id }) => {
       isLeft: false,
       isRight: false,
       xpos: Math.floor(Math.random() * window.innerWidth) + 1,
-      ypos: Math.floor(Math.random() * window.innerHeight) + 1
-    } 
+      ypos: Math.floor(Math.random() * window.innerHeight) + 1,
+    };
     registerVehicle(newVehicle);
   }
   useEffect(() => {

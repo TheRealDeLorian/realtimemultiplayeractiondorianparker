@@ -12,8 +12,6 @@ const tickInterval: number = 10;
 export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [sockets, setSockets] = useState<WebSocket[]>([]);
-
   const [vehicleList, setVehicleList] = useState<PlayerVehicle[]>([
     {
       id: 1,
@@ -27,13 +25,8 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
   ]);
 
   const registerVehicle = (vehicle: PlayerVehicle) => {
-    setVehicleList([...vehicleList, vehicle]);
-    const newSocket = new WebSocket("ws://localhost:5210/ws");
-    setSockets([...sockets, newSocket]);
-    newSocket.addEventListener("open", () => {
-      console.log("connected to server");
-      newSocket.send("New user has entered the game");
-    });
+    console.log("Registering Vehicle");
+    setVehicleList((oldVehicles) => [...oldVehicles, vehicle]);
   };
 
   const updateVehicle = (
@@ -91,20 +84,16 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
     });
   };
 
-  const loop = () => {
-    setTimeout(() => {
-      setVehicleList((x) => x.map((y) => moveVehicle(y)));
-      sockets.map((s) =>
-        s.addEventListener("message", (event) => {
-          console.log("received event", event.data);
-        })
-      );
-      loop();
-    }),
-      tickInterval;
-  };
+  // console.log(vehicleList.length)
 
   useEffect(() => {
+    const loop = () => {
+      setTimeout(() => {
+        setVehicleList((x) => x.map((y) => moveVehicle(y)));
+        loop();
+      }),
+        tickInterval;
+    };
     loop();
   }, []);
 
