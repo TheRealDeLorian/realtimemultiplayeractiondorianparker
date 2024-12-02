@@ -12,6 +12,20 @@ const tickInterval: number = 10;
 export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
+  const [socket, setSocket] = useState<WebSocket | undefined>(undefined);
+
+  useEffect(() => {
+    const newSocket = new WebSocket("ws://localhost:5210/ws");
+    setSocket(newSocket);
+    newSocket.addEventListener("open", () => {
+      console.log("connected to server");
+    });
+
+    newSocket.addEventListener("message", (event) => {
+      console.log("received event", event.data);
+    });
+  }, []);
+
   const [vehicleList, setVehicleList] = useState<PlayerVehicle[]>([
     {
       id: 1,
@@ -79,12 +93,11 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
         }
         return v;
       });
-
+      //broadcast message
+      socket?.send(JSON.stringify(updatedVehicles));
       return updatedVehicles; // Update the state with the new array
     });
   };
-
-  // console.log(vehicleList.length)
 
   useEffect(() => {
     const loop = () => {
