@@ -22,13 +22,13 @@ export const gameServerContext = createContext<GameServerContextInterface>({
   vehicleList: [
     {
       //these value are just making ts happy
-      id: 1,
-      xpos: 100,
-      ypos: 100,
+      acceleration: "none",
       angleindegs: 0,
+      id: 1,
       isLeft: false,
       isRight: false,
-      acceleration: "none",
+      xpos: 100,
+      ypos: 100,
     },
   ],
   updateVehicle: () => {},

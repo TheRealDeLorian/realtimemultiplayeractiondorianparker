@@ -1,7 +1,7 @@
 import { useGameServerContext } from "../context/useGameServerContext";
 import { PlayerControls } from "./PlayerControls";
 
-export const VehicleComponent = () => {
+export const ServerVehicleComponent = () => {
   const { vehicleList } = useGameServerContext();
 
   return (

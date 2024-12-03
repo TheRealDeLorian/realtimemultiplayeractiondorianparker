@@ -20,21 +20,17 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
     newSocket.addEventListener("open", () => {
       console.log("connected to server");
     });
-
-    newSocket.addEventListener("message", (event) => {
-      console.log("received event", event.data);
-    });
   }, []);
 
   const [vehicleList, setVehicleList] = useState<PlayerVehicle[]>([
     {
-      id: 1,
-      xpos: 100,
-      ypos: 100,
+      acceleration: "none",
       angleindegs: 0,
+      id: 1,
       isLeft: false,
       isRight: false,
-      acceleration: "none",
+      xpos: 100,
+      ypos: 100,
     },
   ]);
 
@@ -88,7 +84,6 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
             default:
               console.warn("Unknown vehicleAction: ", vehicleAction);
           }
-          console.log("Updated Vehicle: ", updatedVehicle);
           return updatedVehicle;
         }
         return v;
