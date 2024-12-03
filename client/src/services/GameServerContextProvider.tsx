@@ -4,6 +4,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { PlayerVehicle } from "../Data/PlayerVehicle";
 import { gameServerContext } from "../context/useGameServerContext";
 import { moveVehicle } from "../logic/vehicleUtils";
+import { Buffer } from "buffer";
 
 const accelerationSpeed: number = 5;
 const turningSpeed: number = 5;
@@ -19,6 +20,13 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
     setSocket(newSocket);
     newSocket.addEventListener("open", () => {
       console.log("connected to server");
+    });
+
+    newSocket.addEventListener("message", (event) => {
+      console.log(event.data);
+      const serverVehicles: PlayerVehicle[] = JSON.parse(event.data);
+
+      setVehicleList(serverVehicles);
     });
   }, []);
 
@@ -89,7 +97,6 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
         return v;
       });
       //broadcast message
-      socket?.send(JSON.stringify(updatedVehicles));
       return updatedVehicles; // Update the state with the new array
     });
   };
@@ -97,13 +104,21 @@ export const GameServerContextProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     const loop = () => {
       setTimeout(() => {
-        setVehicleList((x) => x.map((y) => moveVehicle(y)));
+        setVehicleList((x) => {
+          const state = x.map((y) => moveVehicle(y));
+          console.log("state: ", state);
+          const buffer = Buffer.from(JSON.stringify(state));
+          if (socket && socket.readyState) {
+            socket.send(buffer);
+          }
+          return state;
+        });
         loop();
       }),
         tickInterval;
     };
     loop();
-  }, []);
+  }, [socket]);
 
   return (
     <gameServerContext.Provider

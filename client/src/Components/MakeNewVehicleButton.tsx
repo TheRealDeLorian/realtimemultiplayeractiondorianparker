@@ -8,7 +8,7 @@ export const MakeNewVehicleButton = () => {
     const newVehicle: PlayerVehicle = {
       acceleration: "none",
       angleindegs: 0,
-      id: Math.floor(Math.random()),
+      id: Math.floor(Math.random() * 1000),
       isLeft: false,
       isRight: false,
       xpos: Math.floor(Math.random() * window.innerWidth) + 1,

@@ -6,22 +6,17 @@ export interface GameClientContextInterface {
   registerVehicle: (vehicle: PlayerVehicle) => void;
 }
 
-export const gameClientContext = createContext<GameClientContextInterface>({
-  vehicleList: [
-    {
-      //these value are just making ts happy
-      id: 1,
-      xpos: 100,
-      ypos: 100,
-      angleindegs: 0,
-      isLeft: false,
-      isRight: false,
-      acceleration: "none",
-    },
-  ],
-  registerVehicle: () => {},
-});
+export const gameClientContext =
+  createContext<GameClientContextInterface | null>(null);
 
-export const useGameClientContext = () => {
-  return useContext(gameClientContext);
+export const useGameClientContext = (): GameClientContextInterface => {
+  const context = useContext(gameClientContext);
+
+  if (!context) {
+    throw new Error(
+      "useGameClientContext must be used within a GameClientContextProvider"
+    );
+  }
+
+  return context;
 };
